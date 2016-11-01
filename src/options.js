@@ -1,15 +1,28 @@
+/* @flow */
+
 // A second optional argument can be given to further configure
 // the parser process. These options are recognized:
+type InputOptions = {
+  sourceType?: "script" | "module",
+  sourceFilename?: ?string,
+  allowReturnOutsideFunction?: boolean,
+  allowImportExportEverywhere?: boolean,
+  allowSuperOutsideMethod?: boolean,
+  plugins?: Array<string>,
+  strictMode?: ?boolean,
+};
 
-export const defaultOptions: {
-  sourceType: string,
-  sourceFilename: any,
+type Options = {
+  sourceType: "script" | "module",
+  sourceFilename: ?string,
   allowReturnOutsideFunction: boolean,
   allowImportExportEverywhere: boolean,
   allowSuperOutsideMethod: boolean,
   plugins: Array<string>,
-  strictMode: any
-} = {
+  strictMode: ?boolean,
+};
+
+export const defaultOptions: Options = {
   // Source type ("script" or "module") for different semantics
   sourceType: "script",
   // Source filename.
@@ -29,11 +42,11 @@ export const defaultOptions: {
 };
 
 // Interpret and default an options object
+export function getOptions(options?: InputOptions = {}): Options {
+  const finalOptions = { ...defaultOptions };
+  Object.keys(finalOptions).forEach((key: string) => {
+    finalOptions[key] = options[key];
+  });
 
-export function getOptions(opts?: Object): Object {
-  let options = {};
-  for (let key in defaultOptions) {
-    options[key] = opts && key in opts ? opts[key] : defaultOptions[key];
-  }
-  return options;
+  return finalOptions;
 }
