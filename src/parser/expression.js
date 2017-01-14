@@ -833,6 +833,20 @@ pp.checkGetterSetterParamCount = function (method) {
   }
 };
 
+// get methods aren't allowed to have any parameters
+// set methods must have exactly 1 parameter
+pp.checkGetterSetterParamCount = function (method) {
+  const paramCount = method.kind === "get" ? 0 : 1;
+  if (method.params.length !== paramCount) {
+    const start = method.start;
+    if (method.kind === "get") {
+      this.raise(start, "getter should have no params");
+    } else {
+      this.raise(start, "setter should have exactly one param");
+    }
+  }
+};
+
 pp.parseObjectMethod = function (prop, isGenerator, isAsync, isPattern) {
   if (isAsync || isGenerator || this.match(tt.parenL)) {
     if (isPattern) this.unexpected();
