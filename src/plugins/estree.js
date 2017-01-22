@@ -178,8 +178,11 @@ export default function (instance) {
 
   instance.extend("parseMethod", function(inner) {
     return function (node, ...args) {
-      const value = inner.call(this, this.startNode(), ...args);
-      node.value = this.finishNode(value, "FunctionExpression");
+      let funcNode = this.startNode();
+      funcNode.kind = node.kind; // provide kind, so inner method correctly sets state
+      funcNode = inner.call(this, funcNode, ...args);
+      delete funcNode.kind;
+      node.value = this.finishNode(funcNode, "FunctionExpression");
 
       return node;
     };
