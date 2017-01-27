@@ -316,10 +316,11 @@ pp.flowParseObjectTypeIndexer = function (node, isStatic, variance) {
   return this.finishNode(node, "ObjectTypeIndexer");
 };
 
-pp.flowParseObjectTypeMethodish = function (node) {
+pp.flowParseObjectTypeMethodish = function (node, isMethod) {
   node.params = [];
   node.rest = null;
   node.typeParameters = null;
+  node.method = isMethod || false;
 
   if (this.isRelational("<")) {
     node.typeParameters = this.flowParseTypeParameterDeclaration();
@@ -344,7 +345,7 @@ pp.flowParseObjectTypeMethodish = function (node) {
 
 pp.flowParseObjectTypeMethod = function (startPos, startLoc, isStatic, key) {
   const node = this.startNodeAt(startPos, startLoc);
-  node.value = this.flowParseObjectTypeMethodish(this.startNodeAt(startPos, startLoc));
+  node.value = this.flowParseObjectTypeMethodish(this.startNodeAt(startPos, startLoc), true);
   node.static = isStatic;
   node.key = key;
   node.optional = false;
