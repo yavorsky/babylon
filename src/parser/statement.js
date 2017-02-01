@@ -185,17 +185,19 @@ pp.parseBreakContinueStatement = function (node, keyword) {
     this.semicolon();
   }
 
-  // Verify that there is an actual destination to break or
-  // continue to.
-  let i;
-  for (i = 0; i < this.state.labels.length; ++i) {
-    const lab = this.state.labels[i];
-    if (node.label == null || lab.name === node.label.name) {
-      if (lab.kind != null && (isBreak || lab.kind === "loop")) break;
-      if (node.label && isBreak) break;
+  if (!this.options.allowUnsyntacticBreakContinue) {
+    // Verify that there is an actual destination to break or
+    // continue to.
+    let i;
+    for (i = 0; i < this.state.labels.length; ++i) {
+      const lab = this.state.labels[i];
+      if (node.label == null || lab.name === node.label.name) {
+        if (lab.kind != null && (isBreak || lab.kind === "loop")) break;
+        if (node.label && isBreak) break;
+      }
     }
+    if (i === this.state.labels.length) this.raise(node.start, "Unsyntactic " + keyword);
   }
-  if (i === this.state.labels.length) this.raise(node.start, "Unsyntactic " + keyword);
   return this.finishNode(node, isBreak ? "BreakStatement" : "ContinueStatement");
 };
 

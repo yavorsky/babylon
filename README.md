@@ -39,6 +39,9 @@ Significant diversions are expected to occur in the future such as streaming, EB
 
 - **allowSuperOutsideMethod** TODO
 
+- **allowUnsyntacticBreakContinue**: When enabled, break and continue
+  statements are not validated.
+
 - **sourceType**: Indicate the mode the code should be parsed in. Can be
   either `"script"` or `"module"`.
 

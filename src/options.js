@@ -7,6 +7,7 @@ export const defaultOptions: {
   allowReturnOutsideFunction: boolean,
   allowImportExportEverywhere: boolean,
   allowSuperOutsideMethod: boolean,
+  allowUnsyntacticBreakContinue: boolean,
   plugins: Array<string>,
   strictMode: any
 } = {
@@ -22,6 +23,8 @@ export const defaultOptions: {
   allowImportExportEverywhere: false,
   // TODO
   allowSuperOutsideMethod: false,
+  // When enabled, break and continue statements are not validated.
+  allowUnsyntacticBreakContinue: false,
   // An array of plugins to enable
   plugins: [],
   // TODO
