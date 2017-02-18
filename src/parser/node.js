@@ -12,6 +12,7 @@ class Node {
     this.start = pos;
     this.end = 0;
     this.loc = new SourceLocation(loc);
+    this.range = [pos, 0];
     if (filename) this.loc.filename = filename;
   }
 
@@ -45,6 +46,7 @@ function finishNodeAt(node, type, pos, loc) {
   node.type = type;
   node.end = pos;
   node.loc.end = loc;
+  node.range[1] = pos;
   this.processComment(node);
   return node;
 }
